@@ -77,8 +77,8 @@ The hyperparameter ranges, for the hyperparameters included in the models below,
 
 ## Logistic Regression
 
-...python
+```python
 # Define our features and target variable
 X = no_show.drop(['is_noshow','Neighbourhood','ScheduledDay','AppointmentDay','PatientId','AppointmentID'], axis=1)
 Y = no_show.is_noshow
-...
+```
