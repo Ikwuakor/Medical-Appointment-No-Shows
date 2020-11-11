@@ -233,6 +233,7 @@ Y = no_show.is_noshow
 Execution time: 3190.07 seconds
 
 | C	   | class_weight	| kernel | model_class     | test_acc	| test_f1	| test_precision	| test_recall	| train_acc	| train_f1	| train_precision	| train_recall |
+|:-----|-------------:|-------:|:----------------|---------:|--------:|----------------:|------------:|----------:|----------:|----------------:|-------------:|
 | 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
 | 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
 | 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
