@@ -85,7 +85,7 @@ Y = no_show.is_noshow
 Execution time: 53.11 seconds
 
 |     C |  max_iter | class_weight   |   train_precision |   test_precision |   train_recall |   test_recall |   train_acc |   test_acc |   train_f1 |   test_f1 |
-| -----:|-----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
+| -----:|----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
 |  0.01 |      3000 | balanced       |          0.321798 |         0.31218  |       0.57161  |      0.56527  |    0.667951 |   0.666184 |   0.411778 |  0.402225 |
 |  0.01 |      2000 | balanced       |          0.321798 |         0.31218  |       0.57161  |      0.56527  |    0.667951 |   0.666184 |   0.411778 |  0.402225 |
 |  0.01 |      3000 | balanced       |          0.321798 |         0.31218  |       0.57161  |      0.56527  |    0.667951 |   0.666184 |   0.411778 |  0.402225 |
@@ -102,13 +102,14 @@ None of the model parameter combinations were able to perform above our previous
 This model takes some time to run, though. At the moment, we're using all of our categorical besides ``Neighbourhood``, the ID features and the Schedule/Appointment variables from which we've extracted our ``Schedule``, ``Appointment``, ``TimeOfDay`` and ``DaysTilAppt`` features. We've seen previously, from our correlation heatmap, that our target variable only shares a small correlation with a handful of features, anyway. So, let's reduce our model features and see how the model performs.
 
 ```python
+# Define our features and target variable
 X = no_show[['Age','TimeOfDay','SMS_received','DaysTilAppt']]
 Y = no_show.is_noshow
 ```
 Execution time: 3.89 seconds
 
 |     C |  max_iter | class_weight   |   train_precision |   test_precision |   train_recall |   test_recall |   train_acc |   test_acc |   train_f1 |   test_f1 |
-| -----:|-----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
+| -----:|----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
 |  1    |      4000 | balanced       |          0.31992  |         0.309728 |       0.567033 |      0.559654 |    0.666878 |   0.664706 |   0.409052 |  0.398767 |
 |  1    |      4000 | balanced       |          0.31992  |         0.309728 |       0.567033 |      0.559654 |    0.666878 |   0.664706 |   0.409052 |  0.398767 |
 |  0.5  |      3000 | balanced       |          0.319908 |         0.309644 |       0.567033 |      0.559502 |    0.666865 |   0.664646 |   0.409043 |  0.398659 |
@@ -120,3 +121,23 @@ Execution time: 3.89 seconds
 |  0.01 |      4000 | balanced       |          0.320313 |         0.310232 |       0.566652 |      0.559199 |    0.667408 |   0.6654   |   0.409275 |  0.399068 |
 |  0.01 |      3000 | balanced       |          0.320313 |         0.310232 |       0.566652 |      0.559199 |    0.667408 |   0.6654   |   0.409275 |  0.399068 |
 
+With this search we see a slight downtick in ``test_recall`` and ``test_f1`` scores but a significant improvement in execution time despite the runtime on the first search not being all that prohibitive. Nonetheless, let's reduce our features a bit, to just the two highest correlating features, and see what we get.
+
+```python
+# Define our features and target variable
+X = no_show[['SMS_received','DaysTilAppt']]
+Y = no_show.is_noshow
+```
+
+|     C |  max_iter | class_weight   |   train_precision |   test_precision |   train_recall |   test_recall |   train_acc |   test_acc |   train_f1 |   test_f1 |
+| -----:|----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
+|  1    |      4000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.01 |      4000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.01 |      4000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.5  |      4000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.01 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.5  |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.5  |      4000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.25 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.25 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+|  0.01 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
