@@ -8,7 +8,7 @@ Patients failing to make their appointments can be quite problematic for medical
 + a method to help Brazilian medical offices anticipate appointment no-shows and subsequently determine whether intervention methods are cost effective.
 + a template for similar investigations across various locations, both inside and outside of Brazil, as well as in other professions where appointments are scheduled (with industry relevant variables).
 
-### Let's check for, and examine, any outliers in our lone continuous variable, $Age$. Let's plot our age variable.
+### Let's check for, and examine, any outliers in our lone continuous variable, _Age_. Let's plot our age variable.
 
 ![image](https://user-images.githubusercontent.com/42311832/98757522-f2724980-2389-11eb-9e17-31bc1b57edd3.png)
 
@@ -296,4 +296,4 @@ Our Random Forest model outperforms any other model across various hyperparamete
 6. **criterion** is the the function used to measure the quality of a node split. "gini" measures the Gini impurity, usually intended for continuous variables, and "entropy" measures the information gained from one node to the next, usually meant for discrete variables.
 </span>
 
-#To see the full notebook complete with my code where I created my random search algorithms, a zoom-able decision tree and more details regarding my EDA analysis, click <a href="https://github.com/Ikwuakor/Medical-Appointment-No-Shows/blob/main/Predicting%20Medical%20Appointment%20No-Shows.ipynb">here</href>.
+# To see the full notebook complete with my code where I created my random search algorithms, a zoom-able decision tree and more details regarding my EDA analysis, click <a href="https://github.com/Ikwuakor/Medical-Appointment-No-Shows/blob/main/Predicting%20Medical%20Appointment%20No-Shows.ipynb">here</href>.
