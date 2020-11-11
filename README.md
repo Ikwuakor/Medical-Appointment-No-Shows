@@ -74,3 +74,11 @@ The hyperparameter ranges, for the hyperparameters included in the models below,
 + Scheduled - 0.004
 + Appointment - 0.003
 + DaysTilAppt - 0.85
+
+## Logistic Regression
+
+...python
+# Define our features and target variable
+X = no_show.drop(['is_noshow','Neighbourhood','ScheduledDay','AppointmentDay','PatientId','AppointmentID'], axis=1)
+Y = no_show.is_noshow
+...
