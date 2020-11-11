@@ -222,3 +222,28 @@ print(cvs, f', mean score: {np.mean(cvs)}')
 ⮕  [0.93839606 0.95766129 0.86623348 0.91218638 0.92293907] , mean score: 0.9194832541879588
 
 Again, the simplest model outperforms its larger counterparts, consistently testing above 0.91 even at a mere max-depth of three. The low tree depth is a form of regularization, meaning that, along with the consistency between training and testing scores, our model is performing as intended (high recall) without overfitting. You can see from our cross validation scores that if we take the hyperparameters from one of our top performing hyperparameter combinations, we get high recall scores across the board.
+
+## Support Vector Machines
+In the interest of saving time, let's only run the support vector classifier model on the minimized, two feature set.
+
+```python
+X = no_show[['SMS_received','DaysTilAppt']]
+Y = no_show.is_noshow
+```
+Execution time: 3190.07 seconds
+
+| C	   | class_weight	| kernel | model_class     | test_acc	| test_f1	| test_precision	| test_recall	| train_acc	| train_f1	| train_precision	| train_recall |
+| 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
+| 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
+| 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
+| 0.01 | balanced	    | linear | sklearn.svm.SVC | 0.636931	|0.378504	| 0.286787	      | 0.556466	  | 0.638636	| 0.386967	| 0.295364	      | 0.560931     |
+| 0.25 | balanced	    | linear | sklearn.svm.SVC | 0.637896	|0.374863	| 0.285284	      | 0.546448	  | 0.639502	| 0.384237	| 0.294344	      | 0.553175     |
+| 0.25 | balanced	    | linear | sklearn.svm.SVC | 0.637896	|0.374863	| 0.285284	      | 0.546448	  | 0.639502	| 0.384237	| 0.294344	      | 0.553175     |
+| 0.5	 | balanced	    | linear | sklearn.svm.SVC | 0.63865	|0.373195	| 0.284722	      | 0.541439	  | 0.640278	| 0.382261	| 0.29367	        | 0.547391     |
+| 1	   | balanced	    | linear | sklearn.svm.SVC | 0.63865	|0.373195	| 0.284722	      | 0.541439	  | 0.640278	| 0.382261	| 0.29367	        | 0.547391     |
+| 0.5	 | balanced	    | linear | sklearn.svm.SVC | 0.63865	|0.373195	| 0.284722	      | 0.541439	  | 0.640278	| 0.382261	| 0.29367	        | 0.547391     |
+| 0.5	 | balanced	    | linear | sklearn.svm.SVC | 0.63865	|0.373195	| 0.284722	      | 0.541439	  | 0.640278	| 0.382261	| 0.29367	        | 0.547391     |
+
+This model took an exceedingly long time to run and it is out worst performing model yet. Let's try a gradient boosting model.
+
+
