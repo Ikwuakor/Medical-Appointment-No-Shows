@@ -168,3 +168,57 @@ Execution time: 28.57 seconds
 |  gini     |         4 |          100 | balanced           |  0.303543 |       0.29407  |     0.838599 |    0.829539 |  0.575962 |0.570494 | 0.445743 |0.434213 |
 |  gini     |         4 |           50 | balanced           |  0.30518  |       0.295343 |     0.834721 |    0.824074 |  0.579981 |0.574414 | 0.446952 |0.434842 |
 |  entropy  |         3 |          250 | balanced           |  0.302442 |       0.293312 |     0.823597 |    0.816181 |  0.5779   |0.572786 | 0.442418 |0.431541 |
+
+There are some attractive ``test_recall`` scores among these trials, with each eclipsing 0.82. We're also seeing an improvement in the ``test_f1`` scores. We do see some low precision scores, however, and this is where a medical office's no-show intervention methods and costs would come into play. A doctor's office would have to determine whether the costs of a no-show outweigh the cost of wasting intervention methods on patients who have a high likelihood of showing up. Also, although this model vastly outperforms the logistic model from before in ``test_recall`` score, it takes longer time to run. Now let's see if a reduced predictor set can approximate these improved results while maintaining or improving speed.
+
+```python
+# Define our features and target variable
+X = no_show[['Age','TimeOfDay','SMS_received','DaysTilAppt']]
+Y = no_show.is_noshow
+```
+Execution time: 49.64 seconds
+
+| criterion | max_depth | n_estimators | class_weight | train_precision | test_precision | train_recall | test_recall | train_acc |test_acc | train_f1 | test_f1 |
+| :---------|----------:|-------------:|:-------------|----------------:|---------------:|-------------:|------------:|----------:|--------:|---------:|--------:|
+|  entropy  |         3 |          100 | balanced_subsample |  0.290141 |       0.283822 |     0.905283 |    0.904372 |  0.5304   |0.527609 | 0.439442 |0.432052 |
+|  entropy  |         3 |           50 | balanced           |  0.29113  |       0.284227 |     0.901723 |    0.899059 |  0.533593 |0.530112 | 0.440152 |0.43191  |
+|  gini     |         3 |          100 | balanced           |  0.291493 |       0.284627 |     0.90007  |    0.897086 |  0.534859 |0.53159  | 0.44037  |0.432144 |
+|  gini     |         4 |          250 | balanced_subsample |  0.300273 |       0.28983  |     0.86854  |    0.855191 |  0.561744 |0.554902 | 0.446263 |0.432935 |
+|  gini     |         4 |           50 | balanced           |  0.300484 |       0.289965 |     0.869112 |    0.853522 |  0.562002 |0.555656 | 0.446571 |0.432871 |
+|  gini     |         4 |          100 | balanced_subsample |  0.300765 |       0.290529 |     0.866887 |    0.853066 |  0.563153 |0.556923 | 0.446588 |0.433441 |
+|  gini     |         4 |          100 | balanced_subsample |  0.301355 |       0.290625 |     0.865234 |    0.850789 |  0.564743 |0.557767 | 0.447017 |0.433253 |
+|  gini     |         5 |          100 | balanced_subsample |  0.304529 |       0.2933   |     0.858242 |    0.842593 |  0.572653 |0.565367 | 0.449546 |0.435134 |
+|  gini     |         5 |          100 | balanced_subsample |  0.305501 |       0.294136 |     0.853347 |    0.836825 |  0.575742 |0.568594 | 0.449926 |0.435277 |
+|  entropy  |         5 |          250 | balanced_subsample |  0.305685 |       0.293825 |     0.851821 |    0.834244 |  0.576479 |0.568714 | 0.449914 |0.434587 |
+
+```python
+# Define our features and target variable
+X = no_show.drop(['is_noshow','Neighbourhood','ScheduledDay','AppointmentDay','PatientId','AppointmentID'], axis=1)
+Y = no_show.is_noshow
+```
+Execution time: 36.01 seconds
+
+|criterion | max_depth | n_estimators | class_weight | train_precision | test_precision | train_recall | test_recall | train_acc | test_acc | train_f1 | test_f1 |
+| :--------|----------:|-------------:|:-------------|----------------:|---------------:|-------------:|------------:|----------:|---------:|---------:|--------:|
+|  entropy |         4 |          250 | balanced           |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  gini    |         4 |           50 | balanced_subsample |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  entropy |         4 |          250 | balanced           |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  entropy |         3 |          250 | balanced_subsample |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  gini    |         4 |          250 | balanced           |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  gini    |         4 |          100 | balanced_subsample |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  entropy |         4 |          100 | balanced_subsample |  0.286859 |       0.281288 |     0.919077 |    0.920461 |  0.518974 | 0.516934 | 0.437247 |0.430896 |
+|  entropy |         5 |           50 | balanced           |  0.286916 |       0.28122  |     0.91895  |    0.919854 |  0.519142 | 0.516964 | 0.437299 |0.43075  |
+|  entropy |         5 |           50 | balanced           |  0.286973 |       0.281246 |     0.91895  |    0.919854 |  0.519272 | 0.517024 | 0.437365 |0.43078  |
+|  entropy |         5 |          100 | balanced_subsample |  0.286971 |       0.281218 |     0.918759 |    0.919551 |  0.519323 | 0.517054 | 0.43734  |0.430715 |
+
+### Cross validation
+
+```python
+rfc = ensemble.RandomForestClassifier(class_weight='balanced_subsample', criterion='entropy', max_depth=3, 
+                                      n_estimators=100)
+cvs = cross_val_score(rfc, X, Y, cv=5, scoring='recall')
+print(cvs, f', mean score: {np.mean(cvs)}')
+```
+[0.93839606 0.95766129 0.86623348 0.91218638 0.92293907] , mean score: 0.9194832541879588
+
+Again, the simplest model outperforms its larger counterparts, consistently testing above 0.91 even at a mere max-depth of three. The low tree depth is a form of regularization, meaning that, along with the consistency between training and testing scores, our model is performing as intended (high recall) without overfitting. You can see from our cross validation scores that if we take the hyperparameters from one of our top performing hyperparameter combinations, we get high recall scores across the board.
