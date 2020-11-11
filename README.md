@@ -48,5 +48,29 @@ Although the ``Neighbourhood`` variable doesn't appear as if it will have much p
 
 Interestingly, there seems to be a strong correlation between ``AppointmentID`` and ``Appointment``, ``Scheduled`` and ``DaysTilAppt``, indicating that it is not just a randomly generated variable, but somehow captures some information contained in the latter variables. This probably explains why it also has one of the highest correlations with the target variable out of any of the original variables. Since we weren't given any insight into how ``AppointmentID`` was generated in the data documentation, it might also capture information from other sources that are not a part of this dataset. Therefore, we can exclude it as a model feature, yet still capture some of its prediction power from a combination of one or more of the ``Appointment``, ``Scheduled`` and ``DaysTilAppt`` features. We can also see that ``Age`` significantly correlates with both ``Hipertension`` and ``Diabetes``, while ``Hipertensiopn`` and ``Diabetes`` correlate with each other. However, since none of them have a high correlation with our target variable ``is_noshow``, we'll see how much predictive power they ultimately hold.
 
+
 > ### A quick word on the parameter values: 
 The hyperparameter ranges, for the hyperparameters included in the models below, were decided upon by several trials in the build up to the final model, where the highest performing values, or ranges, were honed in upon. You will see these parameters used in the upcoming models (see footnote for hyperparameter definitions)[<sub>1</sub>](#fn1).
+
+![image](https://user-images.githubusercontent.com/42311832/98758700-a70d6a80-238c-11eb-8e04-72717cd5b22c.png)
+
+> Since our data is unbalnced, with and 80/20 split between patients who arrived to their appointments and no-shows, respectively, we first balanced our data with class weights. At first glance, it appears as if our decision tree has a good classification split right from the root node. `DaysTilAppt $<= 0.5` seems to be the rule that best classifies our observations, with same-day appointments being the greatest predictor of a patient's arrival. We can confirm that with the built-in ``feature_importance_`` method for decision tree classifiers, below.
+
+> Although the range of *Days Until Appointment* has been truncated to improve the visibility of the frequency disparity, the distribution plot below shows us that the frequency of no-shows is higher at every *Days Until Appointment* bin level except that representing same day appointments (zero days). We can confirm that the average days between scheduling and appointment is seven days longer for no-shows than it is for *show-ups*.
+
+![image](https://user-images.githubusercontent.com/42311832/98758746-c0161b80-238c-11eb-9340-ca285dab0488.png)
+
+### Feature Importance:
+
++ Age - 0.109
++ Scholarship - 0.001
++ Hipertension - 0.0
++ Diabetes - 0.0
++ Alcoholism - 0.002
++ Handcap - 0.0
++ SMS_received - 0.011
++ is_male - 0.008
++ TimeOfDay - 0.012
++ Scheduled - 0.004
++ Appointment - 0.003
++ DaysTilAppt - 0.85
