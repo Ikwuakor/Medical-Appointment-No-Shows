@@ -296,16 +296,4 @@ Our Random Forest model outperforms any other model across various hyperparamete
 6. **criterion** is the the function used to measure the quality of a node split. "gini" measures the Gini impurity, usually intended for continuous variables, and "entropy" measures the information gained from one node to the next, usually meant for discrete variables.
 </span>
 
-<span id="fn2">2. 
-    
-F1 score is the harmonic mean of the precision and recall, ie.the reciprocal of the arithmetic mean of the reciprocals of the given set of observations, where an F1 score reaches its best value at 1 (perfect precision and recall) and worst at 0. Example:
-
-Arithmetic mean of 1, 4 and 4:
-$$
-{(1 + 4 + 4)}/{3} = (1^{-1} + 4^{-1} + 4^{-1})/3 = 3/(1/1 + 1/4 + 1/4) = 3/1.5 = 2\\
-$$                        
-Arithmetic mean of precision and recall: 
-$$
-(p + r)/2 = 2(1/p + 1/r) = 2(1/[(p + r)/(p * r)]) =  2(p * r)/(p + r)\\
-$$                        
-</span>
+#To see the full notebook complete with my code where I created my random search algorithms, a zoom-able decision tree and more details regarding my EDA analysis, click here.
