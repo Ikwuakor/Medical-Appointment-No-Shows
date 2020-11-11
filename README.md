@@ -96,3 +96,27 @@ Execution time: 53.11 seconds
 |  0.5  |      4000 | balanced       |          0.321427 |         0.311688 |       0.572055 |      0.564663 |    0.667434 |   0.665762 |   0.41159  |  0.401663 |
 |  1    |      4000 | balanced       |          0.321071 |         0.310792 |       0.572564 |      0.564359 |    0.666917 |   0.664797 |   0.411429 |  0.400841 |
 |  1    |      3000 | balanced       |          0.321071 |         0.310792 |       0.572564 |      0.564359 |    0.666917 |   0.664797 |   0.411429 |  0.400841 |
+
+None of the model parameter combinations were able to perform above our previous baseline of 80% accuracy. However, let's say, for instance, that a medical office was more concerned with targeting as many no-shows as possible, even if it means targeting some *show-ups* in the process. Depending on what intervention measures they choose to employ to combat no-shows, as well as the associated costs, the best **recall** (the ratio of predicted positives to actual positives, also known as the **True Positive Rate**) or **f1 score** (the reciprocal of the arithmetic mean of recall and precision)[<sub>2</sub>](#fn2) might better identify the preferred parameters for this model than the accuracy score alone. Several parameter combinations score over 0.5 on ``test_recall`` in our logistic regression model, which means over 50% of all cancellations are being identified.
+
+This model takes some time to run, though. At the moment, we're using all of our categorical besides ``Neighbourhood``, the ID features and the Schedule/Appointment variables from which we've extracted our ``Schedule``, ``Appointment``, ``TimeOfDay`` and ``DaysTilAppt`` features. We've seen previously, from our correlation heatmap, that our target variable only shares a small correlation with a handful of features, anyway. So, let's reduce our model features and see how the model performs.
+
+```python
+X = no_show[['Age','TimeOfDay','SMS_received','DaysTilAppt']]
+Y = no_show.is_noshow
+```
+Execution time: 3.89 seconds
+
+|     C |  max_iter | class_weight   |   train_precision |   test_precision |   train_recall |   test_recall |   train_acc |   test_acc |   train_f1 |   test_f1 |
+| -----:|-----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
+|  1    |      4000 | balanced       |          0.31992  |         0.309728 |       0.567033 |      0.559654 |    0.666878 |   0.664706 |   0.409052 |  0.398767 |
+|  1    |      4000 | balanced       |          0.31992  |         0.309728 |       0.567033 |      0.559654 |    0.666878 |   0.664706 |   0.409052 |  0.398767 |
+|  0.5  |      3000 | balanced       |          0.319908 |         0.309644 |       0.567033 |      0.559502 |    0.666865 |   0.664646 |   0.409043 |  0.398659 |
+|  0.25 |      3000 | balanced       |          0.31992  |         0.309644 |       0.567033 |      0.559502 |    0.666878 |   0.664646 |   0.409052 |  0.398659 |
+|  0.25 |      2000 | balanced       |          0.31992  |         0.309644 |       0.567033 |      0.559502 |    0.666878 |   0.664646 |   0.409052 |  0.398659 |
+|  0.5  |      3000 | balanced       |          0.319908 |         0.309644 |       0.567033 |      0.559502 |    0.666865 |   0.664646 |   0.409043 |  0.398659 |
+|  0.5  |      3000 | balanced       |          0.319908 |         0.309644 |       0.567033 |      0.559502 |    0.666865 |   0.664646 |   0.409043 |  0.398659 |
+|  0.5  |      4000 | balanced       |          0.319908 |         0.309644 |       0.567033 |      0.559502 |    0.666865 |   0.664646 |   0.409043 |  0.398659 |
+|  0.01 |      4000 | balanced       |          0.320313 |         0.310232 |       0.566652 |      0.559199 |    0.667408 |   0.6654   |   0.409275 |  0.399068 |
+|  0.01 |      3000 | balanced       |          0.320313 |         0.310232 |       0.566652 |      0.559199 |    0.667408 |   0.6654   |   0.409275 |  0.399068 |
+
