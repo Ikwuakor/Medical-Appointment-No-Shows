@@ -128,6 +128,8 @@ With this search we see a slight downtick in ``test_recall`` and ``test_f1`` sco
 X = no_show[['SMS_received','DaysTilAppt']]
 Y = no_show.is_noshow
 ```
+Execution time: 3.38 seconds
+
 
 |     C |  max_iter | class_weight   |   train_precision |   test_precision |   train_recall |   test_recall |   train_acc |   test_acc |   train_f1 |   test_f1 |
 | -----:|----------:|:---------------|------------------:|-----------------:|---------------:|--------------:|------------:|-----------:|-----------:|----------:|
@@ -141,3 +143,28 @@ Y = no_show.is_noshow
 |  0.25 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
 |  0.25 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
 |  0.01 |      3000 | balanced       |          0.301101 |         0.292004 |       0.594431 |      0.590923 |    0.636995 |   0.634066 |   0.399726 |  0.390863 |
+
+Our random search model executed in about the same time with these two features as it did with features from our second search. It also outperformed both of our previous searches in ``test_recall`` score while maintaining only a slight downtick in ``test_f1`` score compared to the original features we modeled.
+
+## Random Forest
+Let's run the previous three collections of features on the random forest model.
+
+```python
+# Define our features and target variable
+X = no_show.drop(['is_noshow','Neighbourhood','ScheduledDay','AppointmentDay','PatientId','AppointmentID'], axis=1)
+Y = no_show.is_noshow
+```
+Execution time: 28.57 seconds
+
+| criterion | max_depth | n_estimators | class_weight | train_precision | test_precision | train_recall | test_recall | train_acc |test_acc | train_f1 | test_f1 |
+| :---------|----------:|-------------:|:-------------|----------------:|---------------:|-------------:|------------:|----------:|--------:|---------:|--------:|
+|  gini     |         3 |          100 | balanced_subsample |  0.29757  |       0.28958  |     0.86409  |    0.85929  |  0.557634 |0.553213 | 0.442689 |0.433179 |
+|  gini     |         5 |           50 | balanced           |  0.300329 |       0.290785 |     0.86962  |    0.85929  |  0.561563 |0.555656 | 0.446468 |0.434526 |
+|  entropy  |         5 |           50 | balanced           |  0.301283 |       0.291086 |     0.866061 |    0.855495 |  0.564381 |0.557345 | 0.447048 |0.434374 |
+|  gini     |         3 |          250 | balanced           |  0.297075 |       0.289336 |     0.858687 |    0.854129 |  0.558151 |0.554209 | 0.441431 |0.432248 |
+|  gini     |         4 |           50 | balanced           |  0.300038 |       0.292581 |     0.857352 |    0.851852 |  0.564316 |0.561356 | 0.444514 |0.435562 |
+|  entropy  |         4 |           50 | balanced_subsample |  0.301201 |       0.291968 |     0.8543   |    0.845325 |  0.567379 |0.561989 | 0.445376 |0.434027 |
+|  gini     |         5 |           50 | balanced_subsample |  0.304882 |       0.294389 |     0.847181 |    0.834548 |  0.576194 |0.56971  | 0.448396 |0.435244 |
+|  gini     |         4 |          100 | balanced           |  0.303543 |       0.29407  |     0.838599 |    0.829539 |  0.575962 |0.570494 | 0.445743 |0.434213 |
+|  gini     |         4 |           50 | balanced           |  0.30518  |       0.295343 |     0.834721 |    0.824074 |  0.579981 |0.574414 | 0.446952 |0.434842 |
+|  entropy  |         3 |          250 | balanced           |  0.302442 |       0.293312 |     0.823597 |    0.816181 |  0.5779   |0.572786 | 0.442418 |0.431541 |
