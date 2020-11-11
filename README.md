@@ -12,11 +12,13 @@ Patients failing to make their appointments can be quite problematic for medical
 
 ![image](https://user-images.githubusercontent.com/42311832/98757522-f2724980-2389-11eb-9e17-31bc1b57edd3.png)
 
-According to our boxplot, there are some outliers on the higher end of our ``Age`` variable. The distribution of ages seem to be fairly well represented across most twenty year ranges, showing a higher frequency around zero years and falling off after 60 years. Let's take a closer look.
+According to our boxplot, there are some outliers on the higher end of our ``Age`` variable. The distribution of ages seem to be fairly well represented across most twenty year ranges, showing a higher frequency around zero years and falling off after 60 years. Let's take a closer look using z scores.
 
 > + number of Outliers above 1 threshold: 19762
 > + number of Outliers above 2 threshold: 1746
+> + number of Outliers above 3 threshold: 5
+> + number of Outliers above 4 threshold: 0
 
-> number of Outliers above 3 threshold: 5
+# Examining our categorical variables
 
-> number of Outliers above 4 threshold: 0
+![image](https://user-images.githubusercontent.com/42311832/98757972-e1760800-238a-11eb-894f-4523c1f580ec.png)
