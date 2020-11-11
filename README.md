@@ -247,4 +247,65 @@ Execution time: 3190.07 seconds
 
 This model took an exceedingly long time to run and it is out worst performing model yet. Let's try a gradient boosting model.
 
+## Gradient Boosting
 
+Gradient Boosting builds an additive model in a forward stage-wise fashion; it allows for the optimization of arbitrary differentiable loss functions. In each stage ``n_classes_``regression trees are fit on the negative gradient of the binomial or multinomial deviance loss function. Binary classification is a special case where only a single regression tree is induced. An initial run of the model produces `nan` values in some of our f1 score columns, indicating that the model is just making a naive, dominant class classification nearly every time (causing division by zero in the f1 formula). This is likely due to the fact that the gradient boosting algorithm doesn't allow us to balance class weights. Therefore, we will employ **Oversampling**.
+
+## Oversampling
+
+In an attempt to overcome the lack of a 'balance class weights' hyperparameter, we'll oversample our minority class. We'll do so after splitting test and training sets in order to avoid cross-set "bleed" where our testing set informs our training set. Since we've already split our data in the cell above, we'll proceed with the oversampling. We'll be using the SMOTE algorithm (Synthetic Minority Oversampling Technique). Also, we'll reproduce the GBoost_RandomSearch function in order to incorporate SMOTE into the built-in test/train split.
+
+```python
+sm = SMOTE(random_state=0, sampling_strategy=1.0)
+
+X = no_show[['SMS_received','DaysTilAppt']]
+Y = no_show.is_noshow
+```
+Execution time: 46.25 seconds
+
+|loss|learning_rate|max_depth|max_features|n_estimators|train_precision| test_precision | train_recall | test_recall | train_acc | test_acc | train_f1 | test_f1 |
+| :----|--------------:|----------:|:----------|--------:|-----------:|-------------:|-------------:|------------:|----------:|---------:|----------:|----------:|
+|  exponential |  0.01 |         3 | sqrt      |     100 |   0.611708 |     0.281288 |     0.918669 |    0.920461 |  0.667764 | 0.516934 |  0.734404 |  0.430896 |
+|  exponential |  0.01 |         4 | sqrt      |     100 |   0.611748 |     0.281254 |     0.918669 |    0.92031  |  0.667813 | 0.516903 |  0.734432 | 0.43084   |
+|  deviance    |  0.01 |         4 | sqrt      |     250 |   0.611748 |     0.281254 |     0.918669 |    0.92031  |  0.667813 | 0.516903 |  0.734432 |  0.43084  |
+|  exponential |  0.1  |         5 | sqrt      |      50 |   0.612247 |     0.281272 |     0.918474 |    0.918488 |  0.668389 | 0.517507 |  0.734729 |  0.430661 |
+|  deviance    |  0.25 |         3 | sqrt      |      50 |   0.612371 |     0.281224 |     0.918442 |    0.918033 |  0.668535 | 0.517537 |  0.734808 |  0.430555 |
+|  deviance    |  0.1  |         5 | sqrt      |     100 |   0.612484 |     0.281254 |     0.918393 |    0.917577 |  0.668665 | 0.517748 |  0.734874 |  0.43054  |
+|  deviance    |  0.1  |         4 | sqrt      |     100 |   0.61243  |     0.28115  |     0.918442 |    0.917577 |  0.668608 | 0.517507 |  0.734851 |  0.430418 |
+|  exponential |  0.5  |         4 | sqrt      |     250 |   0.61305  |     0.281449 |     0.915781 |    0.914238 |  0.668876 | 0.519226 |  0.734443 |  0.430399 |
+|  exponential |  0.25 |         3 | sqrt      |     250 |   0.613044 |     0.281435 |     0.915781 |    0.914238 |  0.668868 | 0.519195 |  0.734438 |  0.430383 |
+|  exponential |  0.25 |         3 | sqrt      |     250 |   0.613226 |     0.281787 |     0.914402 |    0.913327 |  0.668835 | 0.520281 |  0.734125 |  0.430693 |
+
+The Gradient Boosting Random Search produced `test_recall` scores comparable to the random search algorithm. The model execution times are also very similar. The only notable differences are the cross-validation scores, which are more consistent with Gradient Boosting while scoring almost as high on average (0.918 vs. 0.919).
+
+## Conclusion
+
+Our Random Forest model outperforms any other model across various hyperparameter combinations, only slightly edging out the Gradient Boosting model. Given the algorithm's ability to apply class weights to our unbalanced data set while performing well on both training and testing sets (not to mention at low max depths), we can have a high degree of confidence that our model is not overfitting the training data while simultaneously not making naive classifications. Also, being able to apply the class weights hyperparameter directly, it negates the neccessity of using the SMOTE algorithm to balance our classes. Ultimately, Random Forests is the preferred model over Gradient Boost due to simplicity alone.
+
+### Footnotes
+
+<span id="fn1">
+1.
+    
+1. **C**, our inverse regularization parameter, affects the sensitivity of our output/prediction to our various inputs/features. Since the relationship is inverse, the smaller our 'C' value, the stronger our regularization. Regularization prevents overfitting by making our predictions less sensitive to our features by shrinking the coefficients of those features.
+2. **class_weight**, when 'balanced', adjusts weights inversely proportional to the frequencies of each class in the input data, effectively reducing the predictive power of the larger class while boosting the predictive power of the smaller class. When not specified, all class weights would be equal to one. The "balanced_subsample" mode, in our random forest model, is the same as "balanced" except that weights are computed for every tree grown.
+3. **max_iter** is the maximum number of iterations allotted for the logistic regression model to converge towards accuracy.
+4. **n_estimators** are the number of trees in the random forest model.
+5. **max_depth** is the maximum depth of a tree in our random forest.
+6. **max_features** is the number of features to consider when looking for the best node split 
+6. **criterion** is the the function used to measure the quality of a node split. "gini" measures the Gini impurity, usually intended for continuous variables, and "entropy" measures the information gained from one node to the next, usually meant for discrete variables.
+</span>
+
+<span id="fn2">2. 
+    
+F1 score is the harmonic mean of the precision and recall, ie.the reciprocal of the arithmetic mean of the reciprocals of the given set of observations, where an F1 score reaches its best value at 1 (perfect precision and recall) and worst at 0. Example:
+
+Arithmetic mean of 1, 4 and 4:
+$$
+{(1 + 4 + 4)}/{3} = (1^{-1} + 4^{-1} + 4^{-1})/3 = 3/(1/1 + 1/4 + 1/4) = 3/1.5 = 2\\
+$$                        
+Arithmetic mean of precision and recall: 
+$$
+(p + r)/2 = 2(1/p + 1/r) = 2(1/[(p + r)/(p * r)]) =  2(p * r)/(p + r)\\
+$$                        
+</span>
