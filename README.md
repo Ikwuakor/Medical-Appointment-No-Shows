@@ -296,4 +296,4 @@ Our Random Forest model outperforms any other model across various hyperparamete
 6. **criterion** is the the function used to measure the quality of a node split. "gini" measures the Gini impurity, usually intended for continuous variables, and "entropy" measures the information gained from one node to the next, usually meant for discrete variables.
 </span>
 
-#To see the full notebook complete with my code where I created my random search algorithms, a zoom-able decision tree and more details regarding my EDA analysis, click here.
+#To see the full notebook complete with my code where I created my random search algorithms, a zoom-able decision tree and more details regarding my EDA analysis, click <a href="https://github.com/Ikwuakor/Medical-Appointment-No-Shows/blob/main/Predicting%20Medical%20Appointment%20No-Shows.ipynb">here</href>.
