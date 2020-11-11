@@ -219,6 +219,6 @@ rfc = ensemble.RandomForestClassifier(class_weight='balanced_subsample', criteri
 cvs = cross_val_score(rfc, X, Y, cv=5, scoring='recall')
 print(cvs, f', mean score: {np.mean(cvs)}')
 ```
-[0.93839606 0.95766129 0.86623348 0.91218638 0.92293907] , mean score: 0.9194832541879588
+>>> [0.93839606 0.95766129 0.86623348 0.91218638 0.92293907] , mean score: 0.9194832541879588
 
 Again, the simplest model outperforms its larger counterparts, consistently testing above 0.91 even at a mere max-depth of three. The low tree depth is a form of regularization, meaning that, along with the consistency between training and testing scores, our model is performing as intended (high recall) without overfitting. You can see from our cross validation scores that if we take the hyperparameters from one of our top performing hyperparameter combinations, we get high recall scores across the board.
