@@ -19,6 +19,9 @@ According to our boxplot, there are some outliers on the higher end of our ``Age
 > + number of Outliers above 3 threshold: 5
 > + number of Outliers above 4 threshold: 0
 
-# Examining our categorical variables
+## Examining our categorical variables
 
 ![image](https://user-images.githubusercontent.com/42311832/98757972-e1760800-238a-11eb-894f-4523c1f580ec.png)
+
+> We have an unbalanced dataset with most observations from all our categorical variables falling into the 'No' category, including our target variable ``is_noshow``. What's interesting is that almost 80% of all our observations made their appointments. Therefore, going forward, **80% will be the baseline accuracy metric**, ie. the accuracy score we can expect running a naive model. However, since our data is unbalanced, there are other metrics which we'll prioritze when measuring the success of our models. More on that later.
+### Now, let's take a look at the disparities between no-shows within each of the categorical variable above.
