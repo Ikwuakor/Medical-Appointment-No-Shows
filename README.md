@@ -1,4 +1,4 @@
-# Predicting Medical Appointment No Shows
+# Predicting Medical Appointment No Shows 
 
 >The following project explores a dataset from Brazil to determine to what extent we can predict whether patients will show up to their medical appointments as scheduled. There are 110,527 medical appointments with 14 associated variables. The target variable is ``no-show``, which records whether the patients show-up or are no-shows to their appointment.
 > ### Scholarship variable explanation:
